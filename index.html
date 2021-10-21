@@ -23,6 +23,10 @@
             width: 70%;
 
         }
+        #error > img{
+            width: 50%;
+
+        }
     </style>
     
 </head>
@@ -31,6 +35,7 @@
     <input type="text" name="name" id="name">
     <button onclick="showMovies()">search</button>
     <div id="movie-list"></div>
+    <div id="error"></div>
     
 </body>
 </html>
@@ -38,7 +43,7 @@
 <script>
 
     let parent=document.getElementById("movie-list");
-
+    let parent1=document.getElementById("error");
     function showMovies(){
         parent.innerHTML="";
 
@@ -46,9 +51,26 @@
     fetch(`http://www.omdbapi.com/?s=${name}&apikey=567703d9`).then(function (res){
         return res.json();
     })
+    
     .then(function (res){
        show(res.Search);
-    });
+       parent1.style.display="none";
+
+    })
+    .catch(function(e){
+        parent1.style.display="block";
+        showerror();
+
+    })
+
+    function showerror(){
+        parent1.innerHTML="";
+        let img=document.createElement("img");
+        img.src="https://media3.giphy.com/media/zLCiUWVfex7ji/200w.webp?cid=ecf05e47xt6se676bhgq8twtiwcb3tu025igv11yu0z8uzi3&rid=200w.webp&ct=g";
+        
+        
+        parent1.append(img);
+    }
 
     function show(movie){
 
