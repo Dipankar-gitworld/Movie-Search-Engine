@@ -55,6 +55,7 @@
     .then(function (res){
        show(res.Search);
        parent1.style.display="none";
+       console.log(res);
 
     })
     .catch(function(e){
@@ -78,6 +79,21 @@
 
             let div=document.createElement("div");
 
+            let id=el.imdbID;
+
+            let p0=document.createElement("p");
+            fetch(`http://www.omdbapi.com/?i=${id}&apikey=567703d9`).then(function (res){
+                   return res.json();
+            })
+            .then(function(res){
+                console.log(res.imdbRating);
+                if(res.imdbRating>8.5){
+                    p0.innerText="recommended";
+                    p0.style.textAlign="center";
+                    p0.style.color="red";
+                }
+            })
+
             let img=document.createElement("img");
 
             img.src=el.Poster;
@@ -98,7 +114,7 @@
             p3.innerText=el.Year;
             p3.style.textAlign="center";
 
-            div.append(img,p1,p2,p3);
+            div.append(p0,img,p1,p2,p3);
 
             parent.append(div);
 
