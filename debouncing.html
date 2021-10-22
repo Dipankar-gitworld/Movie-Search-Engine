@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #movie-list{
+            
+            max-width: 90%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4,24%);
+            gap: 10px;
+            margin-top: 30px;
+        }
+        img{
+            
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 70%;
+
+        }
+        #error > img{
+            width: 50%;
+
+        }
+    </style>
+    
+</head>
+<body>
+    <h1>Movie Search App</h1>
+    <input type="text" name="name" id="name" oninput="debounce(showMovies(),5000)">
+    <button onclick="showMovies()">search</button>
+    <div id="movie-list"></div>
+    <div id="error"></div>
+    
+</body>
+</html>
+
+<script>
+
+    let parent=document.getElementById("movie-list");
+    let parent1=document.getElementById("error");
+    function showMovies(){
+        parent.innerHTML="";
+
+    let name=document.getElementById("name").value;
+    if(name===""){return parent1.style.display="none";}
+    fetch(`http://www.omdbapi.com/?s=${name}&apikey=567703d9`).then(function (res){
+        return res.json();
+    })
+    
+    .then(function (res){
+       show(res.Search);
+       parent1.style.display="none";
+       console.log(res);
+
+    })
+    .catch(function(e){
+        parent1.style.display="block";
+        showerror();
+
+    })
+
+    function showerror(){
+        parent1.innerHTML="";
+        let img=document.createElement("img");
+        img.src="https://media3.giphy.com/media/zLCiUWVfex7ji/200w.webp?cid=ecf05e47xt6se676bhgq8twtiwcb3tu025igv11yu0z8uzi3&rid=200w.webp&ct=g";
+        
+        
+        parent1.append(img);
+    }
+
+    function show(movie){
+
+        movie.forEach((el)=>{
+
+            let div=document.createElement("div");
+
+            let id=el.imdbID;
+
+            let p0=document.createElement("p");
+            fetch(`http://www.omdbapi.com/?i=${id}&apikey=567703d9`).then(function (res){
+                   return res.json();
+            })
+            .then(function(res){
+                console.log(res.imdbRating);
+                if(res.imdbRating>8.5){
+                    p0.innerText="recommended";
+                    p0.style.textAlign="center";
+                    p0.style.color="red";
+                }
+            })
+
+            let img=document.createElement("img");
+
+            img.src=el.Poster;
+
+            let p1=document.createElement("p");
+
+            p1.innerText=el.Title;
+            p1.style.textAlign="center";
+
+            let p2=document.createElement("p");
+
+            p2.innerText=el.Type;
+            p2.style.textAlign="center";
+
+
+            let p3=document.createElement("p");
+
+            p3.innerText=el.Year;
+            p3.style.textAlign="center";
+
+            div.append(p0,img,p1,p2,p3);
+
+            parent.append(div);
+
+
+
+        })
+
+    }
+}
+
+
+     function debounce(func,delay){
+
+        if(timerId){
+            clearTimeout(timerId);
+        }
+         timerId = setTimeout(function(){
+             func();
+         },delay);
+     }
+
+
+
+</script>
