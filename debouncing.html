@@ -32,7 +32,7 @@
 </head>
 <body>
     <h1>Movie Search App</h1>
-    <input type="text" name="name" id="name" oninput="debounce(showMovies(),5000)">
+    <input type="text" name="name" id="name" oninput="debounce(showMovies,1000)">
     <button onclick="showMovies()">search</button>
     <div id="movie-list"></div>
     <div id="error"></div>
@@ -41,6 +41,8 @@
 </html>
 
 <script>
+    
+    let timerId;
 
     let parent=document.getElementById("movie-list");
     let parent1=document.getElementById("error");
