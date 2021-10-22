@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #movie-list{
+            max-width: 80%;
+            margin: auto;
+            
+            margin-top: 50px;
+            flex: 2;
+            
+            
+            
+            
+            display: none;
+        }
+        img{
+            
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width:60%;
+
+
+        }
+        #error{
+            margin-top: 50px;
+
+        }
+        #error > img{
+            width: 50%;
+
+        }
+        input{
+            width: 30%;
+        }
+
+        #search-result{
+            width: 30.7%;
+            height: 200px;
+            overflow: scroll;
+            border: 1px solid black;
+            border-top: none;
+            display: none;
+            
+        }
+        h1{
+            color: green;
+        }
+
+        @media (max-width:1050px){
+            p{
+                font-size: 14px;
+            }
+            h1{
+                font-size: 17px;
+            }
+        }
+
+        #trending>p{
+            margin-bottom: 15px;
+            margin-left: 20px;
+            
+           
+        }
+
+
+
+        
+        
+
+
+    </style>
+    
+</head>
+<body>
+    <h1 id="h">Movie Search App</h1>
+    <input type="text" name="name" id="name" oninput="debounce(showMovies,500)">
+    <button onclick="showMovies()">search</button>
+    <div id="search-result"></div>
+    <div id="movie-list"></div>
+    <div id="error"></div>
+    <div id="trending"><h1>Trending movies</h1></div>
+    
+</body>
+</html>
+
+<script>
+    let parent3=document.getElementById("trending");
+
+    fetch("https://api.themoviedb.org/3/trending/movie/day?api_key=a473cf4f70b2e837753e40ce49baea87").then(function(res){
+        return res.json();
+    })
+    .then(function(res){
+        console.log(res.results);
+        let data=res.results;
+        let i=1;
+       data.forEach((el)=>{
+            
+
+            let p=document.createElement("p");
+            p.innerText=(i++)+".  "+el.title;
+            ;
+             parent3.append(p);
+
+        })
+        
+    })
+
+    var timerId;
+
+   
+        let parent=document.getElementById("search-result");
+        let parent1=document.getElementById("error");
+        let parent2=document.getElementById("movie-list");
+        let h1=document.getElementById("h");
+    function showMovies(){
+        
+
+
+        parent.innerHTML="";
+
+        
+
+        let name=document.getElementById("name").value;
+    if(name===""){return parent1.style.display="none";parent.style.display="none";parent2.style.display="none";}
+    fetch(`http://www.omdbapi.com/?s=${name}&apikey=567703d9`).then(function (res){
+        return res.json();
+    })
+    
+    .then(function (res){
+       show(res.Search);
+       parent1.style.display="none";
+       parent.style.display="block";
+       console.log(res);
+
+    })
+    .catch(function(e){
+        parent1.style.display="block";
+        parent.style.display="none";
+        parent2.style.display="none";
+        showerror();
+
+    })
+
+    function showerror(){
+        parent1.innerHTML="";
+        let img=document.createElement("img");
+        img.src="https://media3.giphy.com/media/zLCiUWVfex7ji/200w.webp?cid=ecf05e47xt6se676bhgq8twtiwcb3tu025igv11yu0z8uzi3&rid=200w.webp&ct=g";
+        
+        
+        parent1.append(img);
+    }
+
+    function show(movie){
+
+movie.forEach((el)=>{
+
+    let div=document.createElement("div");
+
+    let id=el.imdbID;
+    let cast;
+    let director;
+    let plot;
+    let genre;
+    let rating;
+    fetch(`http://www.omdbapi.com/?i=${id}&apikey=567703d9`).then(function (res){
+                   return res.json();
+            })
+            .then(function(res){
+                console.log(res);
+                cast=res.Actors;
+                director=res.Director;
+                plot=res.Plot;
+                genre=res.Genre;
+                rating=res.imdbRating;
+                
+            })
+    
+    
+    let a=document.createElement("a");
+    a.href="#";
+    a.style.textDecoration="none";
+    a.onclick=function(){
+        parent2.innerHTML="";
+
+    
+        parent.style.display="none";
+        parent2.style.display="block";
+        parent2.style.display="flex";
+
+        let div1=document.createElement("div");
+        let div2=document.createElement("div");
+        div1.style.width="50%";
+        div2.style.width="50%";
+        
+
+        let img=document.createElement("img");
+
+         img.src=el.Poster;
+
+         let h1=document.createElement("h1");
+
+        h1.innerText=el.Title;
+        
+
+        let p2=document.createElement("p");
+
+        p2.innerText="type : "+el.Type;
+
+        let p8=document.createElement("p");
+        p8.innerText="imdbRating : "+rating;
+        
+
+
+        let p3=document.createElement("p");
+
+        p3.innerText="year : "+el.Year;
+
+        let p7=document.createElement("p");
+        p7.innerText="Director : "+director;
+
+        let p4=document.createElement("p");
+        p4.innerText="Actors : "+cast;
+
+        let p6=document.createElement("p");
+        p6.innerText="Genre : "+genre;
+
+
+
+        let p5=document.createElement("p");
+        p5.innerText="Summary : "+plot;
+        
+
+       div1.append(img);
+       div2.append(h1,p2,p8,p3,p7,p4,p6,p5);
+       parent2.append(div1,div2);
+
+               
+
+
+
+    }
+
+    
+    let p1=document.createElement("p");
+
+    p1.innerText=el.Title;
+    a.append(p1);
+    
+
+   
+
+  
+
+    div.append(a);
+
+    parent.append(div);
+
+
+
+})
+
+}
+
+    }
+
+
+     function debounce(func,delay){
+
+        if(timerId){
+            clearTimeout(timerId);
+        }
+         timerId = setTimeout(function(){
+             func();
+         },delay);
+     }
+     
+
+
+
+</script>
