@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <title>Document</title>
+    <style>
+        #container{
+            margin-top: 30px;
+            margin-left: 20px;
+            margin-right: 20px;
+            display: grid;
+            grid-template-columns: repeat(4,24%);
+            gap: 20px;
+        }
+        #homepage{
+            margin-top: 30px;
+            margin-left: 20px;
+            margin-right: 20px;
+            display: grid;
+            grid-template-columns: repeat(4,24%);
+            gap: 20px;
+        }
+        #nav-bar{
+            display: flex;
+            
+            gap:40px;
+            
+            
+        }
+        .left{
+            
+           
+            flex-basis: 180px;
+            padding: 5px;
+            display: flex;
+            gap: 20px;
+            
+            
+            
+        }
+        .left>div:nth-child(2){
+            display: flex;
+            cursor: pointer;
+        }
+        .middle{
+            
+           
+            flex-grow: 1;
+            padding: 5px;
+            
+           
+           
+        }
+        .middle > div{
+            width: 600px;
+            margin: auto;
+            display: flex;
+            
+            
+            
+            
+            
+        }
+        @media (max-width:1200px){
+            .middle > div{
+                width: 100%;
+            }
+
+        }
+        .middle > div >div:nth-child(1){
+            flex-basis: 70%;
+            background-color: white;
+            
+
+        }
+        .middle > div >div:nth-child(2){
+            flex-basis: 30%;
+            
+
+        }
+        .right{
+            
+            flex-basis: 200px;
+            padding: 10px;
+        }
+        .gap{
+            margin-right: 20px;
+            cursor: pointer;
+            
+        }
+        #search{
+            width:96%;
+            height: 30px;
+            
+            border: 1px solid rgb(230, 228, 228);
+            padding-left: 15px;
+        }
+        button{
+            height: 34px;
+            border: 1px solid rgb(240, 236, 236);
+            background-color: rgb(245, 243, 243);
+            cursor: pointer;
+        }
+        img{
+            width: 38px;
+            margin-right: 0;
+            
+        }
+        
+        h1{
+            margin-left: 0;
+            margin-top: 0;
+            font-family:sans-serif;
+            text-align: center;
+        }
+
+        #signup-page{
+            max-width: 600px;
+            margin: auto;
+            display: none;
+
+        }
+        input{
+            width: 100%;
+            height:40px;
+            margin-bottom: 20px;
+            
+        }
+        .submit{
+            width: 100px;
+            margin-left: 42%;
+            
+           
+        }
+
+        #login-page{
+            max-width: 600px;
+            margin: auto;
+            display: none;
+            
+
+        }
+        
+        
+        
+        
+        
+       
+    </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <div class="left">
+            <div>
+                <button>
+                    <span class="material-icons">
+                        menu
+                     </span>
+                    
+                </button>
+            </div>
+            <div onclick="homepageShow()">
+                <div>
+                
+                    <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/youtube-128.png" alt="">
+                     
+                </div>
+                <div>
+                    <h1>YouTube</h1>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="middle">
+            <div>
+                <div>
+                    <input type="text" name="name" id="search" placeholder="Search">
+                </div>
+                <div>
+                    <button onclick="showvideos()">
+                        <span class="material-icons">
+                          search
+                        </span>
+                    </button>
+                    <button>
+                        <span class="material-icons">
+                          mic
+                        </span>
+                    </button>
+                </div>
+                
+                  
+            </div>
+            
+        </div>
+        <div class="right">
+            <span class="material-icons gap" ">
+                video_call
+            </span>
+            <span class="material-icons gap">
+                apps
+            </span>
+            <span class="material-icons gap">
+                notifications
+            </span>
+            <span onclick="showsignuppage()" class="material-icons gap">
+                account_circle
+            </span>
+            <div id="profile-name" style="float: right; width:80px;height: 50px;  text-align: center; padding: 4px; "> </div>
+        </div>
+
+    </div>
+    
+    <div id="homepage"></div>
+    
+    <div id="container"></div>
+    <div id="signup-page">
+        <p style="font-size: 30px;">already have an account, then  <span onclick="showloginpage()" style="color: cyan;cursor: pointer;">login</span> </p>
+        <h1>signup</h1>
+        <form onsubmit="signup(event)" action="form" id="form">
+            
+            <input type="text" name="name" id="name" placeholder="name">
+            <br>
+            
+            <input type="email" name="email" id="email" placeholder="email">
+            <br>
+            <input type="password" name="password" id="password" placeholder="password">
+            <br>
+            <input type="text" name="username" id="username" placeholder="username">
+            <br>
+            <input type="number" name="mobile" id="mobile" placeholder="mobile">
+            <br>
+            <input type="text" name="description" id="description" placeholder="description">
+            <br>
+            <button type="submit" class="submit">sign up</button>
+        </form>
+
+        <h3 id="success" style="color: rgb(106, 214, 106); text-align: center;display: none;">Registration Success</h3>
+        <h3 id="failed" style="color: red;text-align: center;display: none;">Registration failed, user already exists</h3>
+    </div>
+
+    <div id="login-page">
+        <h1>login</h1>
+        <form onsubmit="login(event)" action="form" id="login-form">
+            
+            
+            <input type="text" name="username" id="username" placeholder="username">
+            <br>
+            
+            <input type="password" name="password" id="password" placeholder="password">
+            <br>
+            
+            
+            <button type="submit" class="submit">login</button>
+        </form>
+
+        <h3 id="failed-login" style="color: red;text-align: center;display: none;">Invalid login</h3>
+
+    </div>
+    
+</body>
+</html>
+
+<script>
+    let parent=document.getElementById("container");
+    let parent_1=document.getElementById("homepage");
+    let login_page=document.getElementById("login-page");
+    let signup_page=document.getElementById("signup-page");
+    let profile_name=document.getElementById("profile-name");
+    let success=document.getElementById("success");
+    let failed=document.getElementById("failed");
+    let failed_login=document.getElementById("failed-login");
+    let signup_form=document.getElementById("form");
+    let form=document.getElementById("login-form");
+
+
+    function showloginpage(){
+        form.password.value="";
+        form.username.value="";
+        failed_login.style.display="none";
+        
+        signup_page.style.display="none";
+        parent.style.display="none";
+        parent_1.style.display="none";
+        login_page.style.display="block";
+    }
+    function showsignuppage(){
+        success.style.display="none";
+        failed.style.display="none";
+        signup_form.name.value="";
+        signup_form.email.value="";
+        signup_form.password.value="";
+        signup_form.username.value="";
+        signup_form.mobile.value="";
+        signup_form.description.value="";
+        parent.style.display="none";
+        parent_1.style.display="none";
+        login_page.style.display="none";
+        signup_page.style.display="block";
+        
+    }
+    
+
+    function signup(e){
+        e.preventDefault();
+        
+
+        
+        
+        let user_data={
+            name:signup_form.name.value,
+            email:signup_form.email.value,
+            password:signup_form.password.value,
+            username:signup_form.username.value,
+            mobile:signup_form.mobile.value,
+            description:signup_form.description.value
+
+        }
+
+        user_data=JSON.stringify(user_data);
+
+        fetch("https://masai-api-mocker.herokuapp.com/auth/register",{
+            method:"POST",
+            body:user_data,
+
+            headers: {
+                "Content-Type": "application/json"
+
+            },
+
+        })
+        .then((res)=>{
+            return res.json();
+        })
+        .then((res)=>{
+            console.log(res);
+            if(res.error===false){
+                success.style.display="block";
+                failed.style.display="none";
+            }else{
+                success.style.display="none";
+                failed.style.display="block";
+
+            }
+        })
+        .catch((e)=>{
+            console.log(e);
+            
+        })
+    }
+
+
+    function login(e){
+        e.preventDefault();
+
+        
+        
+        let user_data={
+            
+            password:form.password.value,
+            username:form.username.value,
+            
+
+        }
+
+        let data_to_send=JSON.stringify(user_data);
+        
+
+        fetch("https://masai-api-mocker.herokuapp.com/auth/login",{
+            method:"POST",
+            body:data_to_send,
+
+            headers: {
+                "Content-Type": "application/json"
+
+            },
+
+        })
+        .then((res)=>{
+            return res.json();
+        })
+        .then((res)=>{
+            console.log(res);
+
+            if(res.error===false){
+                fetchmydata(user_data.username,res.token);
+                homepageShow();
+
+            }
+            
+           
+            
+           // fetchmydata(user_data.username,res.token);
+        })
+        .catch((e)=>{
+            console.log(e);
+            failed_login.style.display="block";
+
+        })
+        
+    }
+
+    function fetchmydata(username,token){
+        let name;
+        fetch(`https://masai-api-mocker.herokuapp.com/user/${username}`,{
+            headers:{
+                "Content-Type" : "application/json",
+                Authorization: `Bearer ${token}`,
+
+            },
+        })
+        .then((res)=>{
+            return res.json();
+        })
+        .then((res)=>{
+            name=res.name;
+            profile_name.innerHTML="";
+            profile_name.innerHTML=name;
+            
+        })
+        
+
+        
+    }
+
+
+    
+
+
+
+
+
+
+
+  
+    
+    fetch(`https://youtube.googleapis.com/youtube/v3/search?regionCode=IN&order=viewCount&type=video&maxResults=20&key=AIzaSyCAE8mv-7iLcU_1JPWq63a7GLd9ulnIydw`).then(function(res){
+        return res.json();
+     })
+     .then(function(res){
+        console.log(res);
+        
+        appendvideos_1(res.items);
+        
+        
+
+     })
+
+     function appendvideos_1(video_data){
+        video_data.forEach(({id:{videoId}})=>{
+            let id=videoId;
+            let div=document.createElement("div");
+            div.innerHTML=`<iframe width="100%" height="250px" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+            parent_1.append(div);
+        })
+
+    }
+
+    function homepageShow(){
+        parent_1.style.display="grid";
+        parent.style.display="none";
+        signup_page.style.display="none";
+        login_page.style.display="none";
+    }
+
+   
+   
+   
+   
+    function showvideos(){
+        
+       parent.innerHTML="";
+       parent_1.style.display="none";
+       login_page.style.display="none";
+       signup_page.style.display="none";
+       parent.style.display="grid";
+        let q=document.getElementById("search").value;
+        fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${q}&type=video&maxResults=20&key=AIzaSyCAE8mv-7iLcU_1JPWq63a7GLd9ulnIydw`).then(function(res){
+        return res.json();
+     })
+     .then(function(res){
+        console.log(res);
+        
+        appendvideos(res.items);
+        
+        
+
+     })
+            
+    }
+    
+  
+
+   
+
+
+
+    function appendvideos(video_data){
+        video_data.forEach(({id:{videoId}})=>{
+            let id=videoId;
+            let div=document.createElement("div");
+            div.innerHTML=`<iframe width="100%" height="250px" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+            parent.append(div);
+        })
+
+    }
+    
+
+
+
+
+    
+
+
+
+
+
+
+
+</script>
